@@ -1,0 +1,171 @@
+https://www.ionos.de/digitalguide/server/konfiguration/linux-befehle-terminal-kommandos-im-ueberblick/
+----------
+GIT
+nano index.html - text editor
+Q - QUIT
+git init - erstellt neues repository im aktuellen verzeichnis
+  in ordner .git versteckter ordner werden alle versionen gespeichert
+
+git status - zeigt an welche dateien ggf geändert wurden
+
+git add <file> oder <ordner> - staging area, commit vorbereiten
+
+git commit - erstellt einen neuen commit aus allen Änderungen die gestaged sind
+	    best practice: immer nur eine Änderung!
+	git commit -m "Nachricht" - Changelog zur aktuellen Änderung
+	git commit --amend - letzten commit überschreiben - nur bei lokalen änderungen
+
+git log - historie anzeigen lassen SHA1 Checksumme - einzigartige ID
+	git log -p index.html -  ausführliche anzeige der aenderungen
+	git log --oneline - anzeige commits zusammengefasst
+	git log --oneline --graph --branches  - zeigt branches an
+
+git diff - zeigt änderungen zu staging area an
+    	git diff --cached   zeigte aenderung von stage zu repository ein
+    	git diff hash1 hash2 -  zeigt aenderungen zw 2 commits -tip: älterer commit zu erst nennen
+
+ACHTUNG DATENVERLUST
+git reset - nimmt änderungen aus der staging area
+    git reset hashXY - löscht alle änderungen nach hashXY, alle änderungen bleiben im working directory bestehen
+    git reset --hard hashXY - löscht alle Änderungen nach hashXY, auch im working directory
+	
+git checkout hashXY - zustand von einem bestimmten commit wiederherstellen
+    git checkout master - springt zurueck zum master
+
+git stash - zwischenspeicher aktueller stand working dir
+	git stash pop -  stellt letzten stand working dir wieder her
+	git stash list - zeigt alle stashes an
+	git diff stash - zeigt den diff des letzten stash an
+
+git revert hashXY - erstellt neuen commit der die änderungen rueckgaengig macht
+
+.gitignore - datei in der ignorierte pfade und dateien stehen
+
+git rm - löscht datei
+git mv - bewegt eine datei
+
+git blame index.html - zeigt zeile fuer zeile was in welchem commit geloescht wurde
+	git blame --color-lines index.html - farbliche kenntlichmachung
+
+git branch - zeigt alle vorhandenen branches an
+	git branch NAME - legt einen neuen branch an
+	git checkout NAME - wechselt zu einem branch
+	shortcut: git checkout -b NAME  - legt neuen branch an und wechselt direkt dorthin
+	git log --oneline --graph --branches  - zeigt branches an
+
+git merge NAMEBRANCH - versucht den aktuellen branch zu mergen
+	git branch - d NAMEBRANCH - löscht den branch nach dem merge
+	git log --oneline --branches --graph   - zeigt branches an
+	git merge --no-ff - kein FF-Merge, also immer ein commit
+	git merge --f-only - erzwingt FF Merge
+
+git rebase NAMEBRANCH - mergen von branches mit konfliktlösung
+
+git tag - tags anzeigen lassen
+	git tag -a vx.y > v0.1
+git tag -a v1.0 COMMITID
+
+
+---------
+
+ext3 journaling > sys schreibt mit, man kann also weiter arbeiten wo zb strom ausgefallen ist, ohne journaling waere der fluechtige speicher sonst weg
+abstraktion > vereinfachung
+sukzessive > nach und nach
+0x.... - 0x > hexadezimal
+fdisk - partitionieren
+lsblk - list block device = BD Massenspeicher, also Medien die in bloecken speichern
+~ - home verz user
+rm - remove
+rm *ms* - remove alles mit ms im namen = *.log - löscht alle dateien .log
+rm -r - remove verzeichnis mit allem inhalt
+mv - move
+ln - link > link hw.sh hw   um hw.sh in hw zu verlinken
+locate - files suchen
+find . -type f -name "hw.sh" - sucht file mit name hw.sh ab aktuellem standpunkt
+ll > ls - list
+    -l  ausfuehrlich
+    -la ausfuehrlicher
+XY -w > XY schreiben > zb history -w 12345.log
+pwd - wo stehe ich
+mkdir - ordner erstellen
+touch - datei erstellen
+man XY - hilfe zum befehl
+tree - Ordner Baum anzeigen
+cat - zusammengefasst anzeigen lassen: cat testdatei0* STERN WICHTIG
+cp - copy
+cp -p - 1:1 kopie
+cp -r - verzeichnis kopieren rekursiv, also mit allem darin
+clear - fenster aufraeumen
+history - liste benutzter befehle history
+more - liest txt oder log dateien
+less - reader
+mtr - server pingen mtr timcastor.de
+/XY - suche in dateien oder manual
+    n - naechster treffer zeigen
+    q - quit
+    e - exit
+    G - ende der datei springen
+    g - anfang der datei springen
+    h - hilfe aufrufen
+file - detail zur datei
+strg + r - schrittweise rueckwaerts suchen
+dnf - dateimanager zum installieren = dnf update
+echo - gibt zeile aus: echo blub = blub
+    STDIN - 0 - kanal zur eingabe
+    STDOUT - 1 - kanal zur ausgabe
+    STDERROR - 2 - kanal zur ausgabe
+    > - umleitung an anfang datei
+    >> - umleitung ende datei
+    | alt gr+<> - leitet um in neues programm
+    echo "12345" 1> testdatei01.txt - schreibt 12345 in testdatei01.txt
+    echo "67890" 1>> testdatei01.txt - schreibt 67890 ans Ende der Datei
+    man ping 1> ping.txt - schreibt man ping in ping.txt
+    less ping.txt liest ping.txt
+    less ping.txt | wc -l >>>>> zeigt anzahl zeilen in datei
+wc - counter fuer zeilen woerter bytes
+sh - shell, ausführbar per synthax
+chmod - aendere den modus === chmod u(ser)+x(ausführen) hw.sh(dateiname)
+
+--- RECHTE ---
+  U   G   O      USER GROUP OTHER
+-rw- r-- r-- = DATEI
+drwx r-x r-x = DIRECTORY
+Read Write eXecute
+
+--- OKTALE RECHTE ---
+immer alle UGO bestimmen, niemals nur 1 Stelle > immer 750zb
+chmod 777 hw.sw === gibt USER GROUP OTHER ALLE RECHTE
+7 alle rechte - 0 keine rechte
+rwx
+421 > also 7 gibt dir volles recht
+chmod 001 > lässt other ausfuehren, alle anderen haben keine rechte
+UMASK - vordefinierte rechte fuer neu erstellte verz und dateien
+  verz 777
+umask 0027
+    -------
+       750
+umask 027 > mkdir test1 > erstellt verzeichnis mit den rechten 750
+DATEIEN NIEMALS MIT EXECUTE erstellen
+dateien maximal mit 666 > damit sie nicht ausfuehrbar sind
+
+tim@fedora:~/testverz$ echo "echo Pilar ist voll doof!" >pilar.sh = erstellt shell mit echo befehl
+tim@fedora:~/testverz$ chmod u+x pilar.sh === gibt User Rechte pilar.sh aus zu ausführen
+tim@fedora:~/testverz$ ./pilar.sh === ausführen
+
+echo mkdir test{5..9} >mkdir1.sh
+chmod u+x mkdir.sh
+./mkdir1.sh
+erstellt ordner test5bis9
+echo rm -r test{5..9} >rmdir.sh
+chmod u+x rmdir.sh
+./rmdir.sh löscht ordner test5bis9
+chmod u=rw,g=r,o=r hw.sh ==== rechte genauer definieren
+--- USER ---
+su -    superuser === immer auslogen mit exit
+useradd -m testuser01 === legt testuser01 mit eigenem home verzeichnis an
+passwd testuser01
+id - user id gid gruppen
+su - switch user === su testuser01 === immer auslogen mit exit
+sudo - superuser erzwingen
+usermod - user modifizieren === usermod -g tim testuser01 === packt testuser01 in gruppe tim
+userdel -r === user löschen mit all seiner ordner
